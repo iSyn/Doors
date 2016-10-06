@@ -1,0 +1,93 @@
+body {
+  overflow-y: hidden;
+  background-color: black;
+}
+
+.header {
+  width: 100%;
+  text-align: center;
+  font-size: 100px;
+  border: 5px double black;
+  background-color: black;
+  font-family: 'Unica One', cursive;
+  color: white;
+}
+
+.game-container {
+  border: 5px double black;
+  background-color: white;
+  width: 70%;
+  height: 80vh;
+  margin: 1% auto;
+
+}
+
+.input-area {
+  width: 100%;
+  height: 5%;
+  /*border: 1px solid red;*/
+}
+
+.img-area {
+  border: 2px solid red;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3px;
+  width: 98%;
+  height: 70%;
+  background: url('http://orig07.deviantart.net/f29a/f/2014/160/b/c/living_room_by_nhe1-d7lmjv7.png');
+  position: relative;
+  background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-size: 75px;
+  color: white;
+  text-align: center;
+  font-family: verdana;
+  -webkit-text-stroke: 2px black;
+}
+
+.caret {
+  font-size: 35px;
+  display: inline;
+  /*border: 1px solid blue;*/
+  margin-top: -6px;
+  margin-left: 5px;
+}
+
+#player-input {
+  display: inline;
+  font-family: 'Unica One', cursive;
+  width: 85%;
+  border: none;
+  outline: none;
+  font-size: x-large;
+  overflow-x: hidden;
+}
+
+.history-area {
+  overflow-y: auto;
+  font-family: 'Unica One', cursive;
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid lightgreen;
+  height: 17%;
+  width: 98%;
+  list-style-type: none;
+  color: white;
+  background-color: black;
+  font-size: large;
+}
+
+.legal-shit {
+  margin-top: 5px;
+  color: black;
+  font-size: 15px;
+  /*border: 2px solid pink;*/
+  text-align: center;
+}
+
+.reply {
+  color: green;
+}
