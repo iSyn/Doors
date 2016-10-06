@@ -35,16 +35,11 @@ body {
   margin-top: 3px;
   width: 98%;
   height: 70%;
-  background: url('http://orig07.deviantart.net/f29a/f/2014/160/b/c/living_room_by_nhe1-d7lmjv7.png');
+  background: /*url(assets/Door1.png)*/;
   position: relative;
   background-color: black;
   background-size: cover;
   background-repeat: no-repeat;
-  font-size: 75px;
-  color: white;
-  text-align: center;
-  font-family: verdana;
-  -webkit-text-stroke: 2px black;
 }
 
 .caret {
@@ -90,4 +85,8 @@ body {
 
 .reply {
   color: green;
+}
+
+.error {
+  color: red;
 }
