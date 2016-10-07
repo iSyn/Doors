@@ -285,7 +285,7 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply"> The door is already open... <li>')
       } else if (foundEnterSynonym) {
         e = 0;
-        $inputLog.prepend('<li class="reply"> you enter the next room <li>')
+        $inputLog.prepend('<li class="reply"> You approach the next door. <li>')
         levelTwo()
         resetValues()
       } else if (foundCloseSynonym) {
@@ -425,8 +425,60 @@ $(function() { // On document ready
       } else if (currentInput != 'hint' && currentInput != 'help') {
         $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
-    } else if (isDoorOpen === true && !isDoorLocked) {
-      ////////////////////
+    } else if (isDoorOpen === true && !isDoorLocked) { // UNLOCKED AND OPEN
+      while (!foundOpenSynonym && o < openSynonyms.length) {
+        if (currentInput === openSynonyms[o]) {
+          foundOpenSynonym = true;
+        }
+        o++;
+      }
+      while (!foundCloseSynonym && c < closeSynonyms.length) {
+        if (currentInput === closeSynonyms[c]) {
+          foundCloseSynonym = true;
+        }
+        c++;
+      }
+      while (!foundLockSynonym && l < lockSynonyms.length) {
+        if (currentInput === lockSynonyms[l]) {
+          foundLockSynonym = true;
+        }
+        l++;
+      }
+      while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+        if (currentInput === unlockSynonyms[u]) {
+          foundUnlockSynonym = true;
+        }
+        u++;
+      }
+      while (!foundEnterSynonym && e < enterSynonyms.length) {
+        if (currentInput === enterSynonyms[e]) {
+          foundEnterSynonym = true;
+        }
+        e++;
+      }
+      if (foundOpenSynonym) {
+        o = 0;
+        $inputLog.prepend('<li class="reply"> The door is already open! You\'re so close! <li>')
+      } else if (foundCloseSynonym) {
+        c = 0;
+        isDoorOpen = false;
+        updateGraphics();
+        closeDoor.play()
+        $inputLog.prepend('<li class="reply"> Why are you going backwards! <li>')
+      } else if (foundLockSynonym) {
+        l = 0;
+        $inputLog.prepend('<li class="reply"> Why wold you even want to lock it... Too bad you can\'t since the door is open. <li>')
+      } else if (foundUnlockSynonym) {
+        u = 0;
+        $inputLog.prepend('<li class="reply"> The door is already unlocked. And it\'s open. Only one more thing to do. <li>')
+      } else if (foundEnterSynonym) {
+        e = 0;
+        resetValues();
+        $inputLog.prepend('<li class="reply"> You approach the next door. <li>')
+        levelThree();
+      } else if (currentInput != 'hint' && currentInput != 'help') {
+        $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
+      }
     }
   }
   // Start game
@@ -448,25 +500,27 @@ $(function() { // On document ready
     level = 1;
     updateGraphics()
     resetValues()
-    if (level === 1) {
-      if (levelText === false) {
-        levelText = true;
-        $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
-        $inputLog.prepend('<li class="reply"> LEVEL ONE - Just a regular door <li>')
-        $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
-      }
-    }
+    $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> LEVEL ONE - Just a regular door <li>')
+    $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
   }
 
   function levelTwo() {
     level = 2;
     resetValues()
     updateGraphics()
-    if (levelText === false) {
-      levelText = true;
-      $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
-      $inputLog.prepend('<li class="reply"> LEVEL TWO - Just a regular locked door <li>')
-      $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
-    }
+    $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> LEVEL TWO - Just a regular locked door <li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
   }
+
+  function levelThree() {
+    level = 3;
+    resetValues()
+    updateGraphics()
+    $inputLog.prepend('<li class="reply"> ----------------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> LEVEL THREE - Just a regular one way door <li>')
+    $inputLog.prepend('<li class="reply"> ----------------------------------------- <li>')
+  }
+
 });
