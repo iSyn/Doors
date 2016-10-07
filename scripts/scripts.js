@@ -173,6 +173,7 @@ $(function() { // On document ready
   updateGraphics()
   getInput()
 
+
   function checkLv0() {
     console.log('checkLv0 is firing')
     var i = 0;
