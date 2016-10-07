@@ -7,10 +7,16 @@ body {
   width: 100%;
   text-align: center;
   font-size: 100px;
-  border: 5px double black;
   background-color: black;
   font-family: 'Unica One', cursive;
   color: white;
+}
+
+.header-text {
+  color: white;
+  text-align: center;
+  font-family: 'Unica One', cursive;
+  margin-top: 0px;
 }
 
 .game-container {
@@ -31,7 +37,7 @@ body {
 }
 
 .img-area {
-  border: 2px solid red;
+  /*border: 2px solid red;*/
   margin-left: auto;
   margin-right: auto;
   margin-top: 3px;

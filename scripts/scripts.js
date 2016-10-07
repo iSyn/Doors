@@ -10,11 +10,12 @@ $(function() { // On document ready
   var gameStarted = false;
   var currentInput = "";
   var levelText = false;
-  var isDoorOpen = false;
   var $inputLog = $('.history-area')
   var spacer = $('<br>')
   var level = 0
   var hint = 0
+  var isDoorOpen = false;
+  var isDoorLocked = true;
 
   // $('.img-area').css('background-size', '100% 100%')
 
@@ -43,9 +44,13 @@ $(function() { // On document ready
     //
   ]
 
+  var keySynonyms = [
+    'key', 'use key', 'use key on door', 'use key on the door'
+  ]
+
   var hints = {
     levelOne: ['do you really need this?', 'type in: open door', 'then type: "enter"'],
-    levelTwo: ['hint1', 'hint2', 'hint3'],
+    levelTwo: ['the door is locked... what do you do', 'hint2', 'hint3'],
     levelThree: ['hint1', 'hint2', 'hint3']
   }
 
@@ -64,13 +69,13 @@ $(function() { // On document ready
       }
     } else if (level === 2) {
       if (hint === 0) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[0]) + '</li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelTwo[0]) + '</li>')
         hint++
       } else if (hint === 1) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[1]) + '</li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelTwo[1]) + '</li>')
         hint++
       } else if (hint === 2) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[2]) + '</li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelTwo[2]) + '</li>')
         hint = 0
       }
     }
@@ -78,14 +83,15 @@ $(function() { // On document ready
 
   var closeDoor = document.createElement("audio");
   var openDoor = document.createElement("audio");
+  var lockSound = document.createElement("audio")
 
 
-  closeDoor.src="assets/closeDoor.mp3";
-  closeDoor.autoPlay=false;
+  closeDoor.src="assets/sfx/closeDoor.mp3";
   closeDoor.preLoad=true;
-  openDoor.src="assets/openDoor.mp3"
-  openDoor.autoPlay=false;
-  openDoor.preLoad=true;      
+  openDoor.src="assets/sfx/openDoor.mp3";
+  openDoor.preLoad=true;   
+  lockSound.src='assets/sfx/lock.mp3';
+  lockSound.preLoad=true;
  
 
 
@@ -95,7 +101,12 @@ $(function() { // On document ready
     })
   }
 
-  preloadImages(['assets/L1_closed.png','assets/L1_open.png','assets/L2_closed.png'])
+  preloadImages([
+    //level one images
+    'assets/L1_closed.png','assets/L1_open.png',
+    //level two images
+    'assets/L2_closedLocked.png', 'assets/L2_closedUnlocked.png', 'assets/L2_open.png'
+    ])
 
   function clearInputBox() {
     document.getElementById('player-input').value = "";
@@ -111,6 +122,7 @@ $(function() { // On document ready
   function resetValues() {
     levelText = false;
     isDoorOpen = false;
+    isDoorLocked = true;
     currentInput = "";
     o = 0; // Open
     c = 0; // Close
@@ -163,7 +175,11 @@ $(function() { // On document ready
     if (level === 2) {
       console.log('updated graphics for lv2')
       if (isDoorOpen === false) {
-        $('.img-area').css('background', 'url(assets/L2_closed.png)')
+        if (isDoorLocked === true) {
+          $('.img-area').css('background', 'url(assets/L2_closedLocked.png)')
+        } else {
+          $('.img-area').css('background', 'url(assets/L2_closedUnlocked.png)')
+        }
       } else {
         $('.img-area').css('background', 'url(assets/L2_open.png)')
       }
@@ -281,6 +297,39 @@ $(function() { // On document ready
     }
   }
 
+  function checkLv2() {
+    var o = 0;
+    var c = 0;
+    var e = 0;
+    var u = 0;
+
+    var foundOpenSynonym = false;
+    var foundCloseSynonym = false;
+    var foundEnterSynonym = false;
+    var foundUnlockSynonym = false;
+
+    if (currentInput === 'help') {
+      helpText()
+    } else if (currentInput === 'hint') {
+      displayHint()
+    }
+
+    if (isDoorOpen === false && isDoorLocked === true) {
+      while ((foundUnlockSynonym === false) && (u < unlockSynonyms.length)) {
+        if (currentInput === unlockSynonyms[u]) {
+          foundUnlockSynonym = true;
+        }
+        u++;
+      }
+      if (foundUnlockSynonym) {
+        isDoorLocked = false;
+        lockSound.play()
+        updateGraphics()
+      }
+    }
+
+  }
+
   // Start game
   startGame()
 
@@ -298,7 +347,6 @@ $(function() { // On document ready
 
 
   function levelOne() {
-    console.log('LEVEL ONE')
     level = 1;
     updateGraphics()
     resetValues()
@@ -313,7 +361,6 @@ $(function() { // On document ready
   }
 
   function levelTwo() {
-    $inputLog.prepend('<li class="reply"> LEVEL TWO <li>')
     level = 2;
     resetValues()
     updateGraphics()
