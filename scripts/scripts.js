@@ -16,7 +16,7 @@ $(function() { // On document ready
   var level = 0
   var hint = 0
 
-  $('.img-area').css('background-size', '100% 100%')
+  // $('.img-area').css('background-size', '100% 100%')
 
   var startSynonyms = [
     'start', 'start game', 'start the game'
@@ -34,37 +34,42 @@ $(function() { // On document ready
 
   var enterSynonyms = [
     'enter', 'enter door', 'enter the door', 'enter room', 'enter the room', 'enter the next room', 'enter next room',
-    'go', 'go door', 'go to door', 'go to the door', 'go through door', 'go through the door',
+    'go', 'go door', 'go to door', 'go to the door', 'go through door', 'go through the door', 'go through',
     'go to next level', 'go to the next level'
   ]
 
   var hints = {
-    levelOne: ['do you really need this?', 'type in: open door', 'then type: "go"'],
+    levelOne: ['do you really need this?', 'type in: open door', 'then type: "enter"'],
     levelTwo: ['hint1', 'hint2', 'hint3'],
     levelThree: ['hint1', 'hint2', 'hint3']
   }
 
+  var unlockSynonyms = [
+    'unlock', 'unlock door', 'unlock the door', 'turn the lock', 'twist the lock'
+    //
+  ]
+
   function displayHint() {
     if (level === 1) {
       if (hint === 0) {
-        $inputLog.prepend('<li class="reply">' + (hints.levelOne[0]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelOne[0]) + '</li>')
         hint++
       } else if (hint === 1) {
-        $inputLog.prepend('<li class="reply">' + (hints.levelOne[1]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelOne[1]) + '</li>')
         hint++
       } else if (hint === 2) {
-        $inputLog.prepend('<li class="reply">' + (hints.levelOne[2]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.levelOne[2]) + '</li>')
         hint = 0
       }
     } else if (level === 2) {
       if (hint === 0) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[0]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[0]) + '</li>')
         hint++
       } else if (hint === 1) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[1]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[1]) + '</li>')
         hint++
       } else if (hint === 2) {
-        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[2]) + '<li>')
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[2]) + '</li>')
         hint = 0
       }
     }
@@ -91,7 +96,7 @@ $(function() { // On document ready
     })
   }
 
-  preloadImages(['assets/L1_closed.png','assets/L1_open.png'])
+  preloadImages(['assets/L1_closed.png','assets/L1_open.png','assets/L2_closed.png'])
 
   function clearInputBox() {
     document.getElementById('player-input').value = "";
@@ -115,13 +120,13 @@ $(function() { // On document ready
   }
 
   function helpText() {
-    $inputLog.prepend('<li class="reply"> If you need a little boost, type: "hint" <li>')
-    $inputLog.prepend('<li class="reply"> These are not all of the commands! There are many hidden ones <li>')
-    $inputLog.prepend('<li class="reply"> "go", "enter", "go to next room", etc. <li>')
-    $inputLog.prepend('<li class="reply"> "close", "close door", "close the door", etc.  <li>')
-    $inputLog.prepend('<li class="reply"> "open", "open door", "open the door", etc. <li>')
-    $inputLog.prepend('<li class="reply"> -------------- <li>')
-    $inputLog.prepend('<li class="reply"> BASIC COMMANDS (scroll down) <li>')
+    $inputLog.prepend('<li class="reply"> If you need a little boost, type: "hint" </li>')
+    $inputLog.prepend('<li class="reply"> These are not all of the commands! There are many hidden ones </li>')
+    $inputLog.prepend('<li class="reply"> "go", "enter", "go to next room", etc. </li>')
+    $inputLog.prepend('<li class="reply"> "close", "close door", "close the door", etc.  </li>')
+    $inputLog.prepend('<li class="reply"> "open", "open door", "open the door", etc. </li>')
+    $inputLog.prepend('<li class="reply"> -------------- </li>')
+    $inputLog.prepend('<li class="reply"> BASIC COMMANDS (scroll down) </li>')
   }
 
   function getInput() {
@@ -152,8 +157,13 @@ $(function() { // On document ready
       } else {
         $('.img-area').css('background', 'url(assets/L1_open.png)')
       }
-    } else if (level === 2) {
-      console.log('fuck me there are no graphics')
+    }
+    if (level === 2) {
+      if (isDoorOpen === false) {
+        $('.img-area').css('background', 'url(assets/L2_closed.png)')
+      } else {
+        $('.img-area').css('background', 'url(assets/L2_open.png)')
+      }
     }
   }
 
@@ -175,7 +185,7 @@ $(function() { // On document ready
       resetValues()
       levelOne()
     } else {
-      $inputLog.prepend('<li class="error"> Just type "start" or "start game"... <li>')
+      $inputLog.prepend('<li class="error"> Just type "start" or "start game"... </li>')
     }
   }
 
@@ -198,51 +208,67 @@ $(function() { // On document ready
       console.log('THE DOOR IS CLOSED')
       while ((foundOpenSynonym === false) && (o < openSynonyms.length)) {
         if (currentInput === openSynonyms[o]) {
-          console.log('CORRECT INPUT DETECTED')
           foundOpenSynonym = true;
         }
         o++;
       }
+      while ((foundEnterSynonym === false) && (e < enterSynonyms.length)) {
+        if (currentInput === enterSynonyms[e]) {
+          foundEnterSynonym = true;
+        }
+        e++;
+      }
+      while ((foundCloseSynonym === false) && (c < closeSynonyms.length)) {
+        if (currentInput === closeSynonyms[c]) {
+          foundCloseSynonym = true;
+        }
+        c++;
+      }
       if (foundOpenSynonym) {
         console.log('YOU OPEN THE DOOR')
         openDoor.play()
-        o = 0
-        $inputLog.prepend('<li class="reply"> you opened the door <li>')
+        o = 0;
+        $inputLog.prepend('<li class="reply"> you opened the door </li>')
         $('.img-area').css('background', 'url(assets/L1_open.png)')
         isDoorOpen = true;
+      } else if (foundCloseSynonym) {
+        $inputLog.prepend('<li class="reply">The door is already closed...... </li>')
+        c = 0;
+      } else if (foundEnterSynonym) {
+        $inputLog.prepend('<li class="reply">How does one enter a closed door... </li>')
       } else if ((currentInput != 'help') && (currentInput != 'hint')) {
-        $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
-      }
-      while ((foundEnterSynonym === false) && (e < enterSynonyms.length)) {
-        if (currentInput === enterSynonyms[e]) {
-          $inputLog.prepend('<li class="reply">how does one go through a closed door... <li>')
-          e = 0;
-          foundEnterSynonym = true
-        }
-        e++
+        $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
       }
     } else { // IF DOOR IS OPEN
       while ((!foundEnterSynonym) && (e < enterSynonyms.length)) {
         if (currentInput === enterSynonyms[e]) {
           foundEnterSynonym = true;
         }
-        e++
+        e++;
       }
       while ((!foundCloseSynonym) && (c < closeSynonyms.length)) {
         if (currentInput === closeSynonyms[c]) {
           foundCloseSynonym = true;
           $('.img-area').css('background', 'url(assets/L1_closed.png)')
         }
-        c++
+        c++;
       }
-      if (foundEnterSynonym) {
-        e = 0
+      while ((!foundOpenSynonym) && (o < openSynonyms.length)) {
+        if (currentInput === openSynonyms[o]) {
+          foundOpenSynonym = true;
+        }
+        o++;
+      }
+      if (foundOpenSynonym) {
+        o = 0;
+        $inputLog.prepend('<li class="reply"> The door is already open... <li>')
+      } else if (foundEnterSynonym) {
+        e = 0;
         $inputLog.prepend('<li class="reply"> you enter the next room <li>')
         levelTwo()
         resetValues()
-      }
-      if (foundCloseSynonym) {
-        c=0;
+      } else if (foundCloseSynonym) {
+        c = 0;
         $inputLog.prepend('<li class="reply"> you close the door <li>')
         closeDoor.play()
         isDoorOpen = false;
