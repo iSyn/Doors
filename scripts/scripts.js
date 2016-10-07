@@ -314,7 +314,7 @@ $(function() { // On document ready
       displayHint()
     }
 
-    if (isDoorOpen === false && isDoorLocked === true) {
+    if (isDoorOpen === false && isDoorLocked === true) { // DOOR IS CLOSED AND LOCKED
       while ((foundUnlockSynonym === false) && (u < unlockSynonyms.length)) {
         if (currentInput === unlockSynonyms[u]) {
           foundUnlockSynonym = true;
@@ -322,8 +322,22 @@ $(function() { // On document ready
         u++;
       }
       if (foundUnlockSynonym) {
+        u = 0;
         isDoorLocked = false;
         lockSound.play()
+        updateGraphics()
+      }
+    } else if (isDoorOpen === false && isDoorLocked === false) { // DOOR IS CLOSED AND NOT LOCKED
+      while (foundOpenSynonym === false && o < openSynonyms.length) {
+        if (currentInput === openSynonyms[o]) {
+          foundOpenSynonym = true;
+        }
+        o++
+      }
+      if (foundOpenSynonym) {
+        o = 0;
+        isDoorOpen = true;
+        openDoor.play()
         updateGraphics()
       }
     }
