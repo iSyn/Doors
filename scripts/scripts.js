@@ -38,16 +38,17 @@ $(function() { // On document ready
     'go to next level', 'go to the next level'
   ]
 
+  var unlockSynonyms = [
+    'unlock', 'unlock door', 'unlock the door', 'turn the lock', 'twist the lock'
+    //
+  ]
+
   var hints = {
     levelOne: ['do you really need this?', 'type in: open door', 'then type: "enter"'],
     levelTwo: ['hint1', 'hint2', 'hint3'],
     levelThree: ['hint1', 'hint2', 'hint3']
   }
 
-  var unlockSynonyms = [
-    'unlock', 'unlock door', 'unlock the door', 'turn the lock', 'twist the lock'
-    //
-  ]
 
   function displayHint() {
     if (level === 1) {
@@ -79,11 +80,9 @@ $(function() { // On document ready
   var openDoor = document.createElement("audio");
 
 
-
-  closeDoor.src="assets/closeDoor.mp3";
+  closeDoor.src="assets/closeDoor.mp3";
   closeDoor.autoPlay=false;
   closeDoor.preLoad=true;
-
   openDoor.src="assets/openDoor.mp3"
   openDoor.autoPlay=false;
   openDoor.preLoad=true;      
@@ -121,12 +120,10 @@ $(function() { // On document ready
 
   function helpText() {
     $inputLog.prepend('<li class="reply"> If you need a little boost, type: "hint" </li>')
-    $inputLog.prepend('<li class="reply"> These are not all of the commands! There are many hidden ones </li>')
-    $inputLog.prepend('<li class="reply"> "go", "enter", "go to next room", etc. </li>')
-    $inputLog.prepend('<li class="reply"> "close", "close door", "close the door", etc.  </li>')
-    $inputLog.prepend('<li class="reply"> "open", "open door", "open the door", etc. </li>')
+    $inputLog.prepend('<li class="reply"> These are not all of the commands! Experiment! </li>')
+    $inputLog.prepend('<li class="reply"> "open", "close", "enter", etc. </li>')
     $inputLog.prepend('<li class="reply"> -------------- </li>')
-    $inputLog.prepend('<li class="reply"> BASIC COMMANDS (scroll down) </li>')
+    $inputLog.prepend('<li class="reply"> BASIC COMMANDS </li>')
   }
 
   function getInput() {
@@ -151,14 +148,20 @@ $(function() { // On document ready
   }
 
   function updateGraphics() {
+    if (level === 0) {
+      console.log('updated graphics for lv0')
+      $('.img-area').css('background', 'url(assets/menuDoor.png)')
+    }
     if (level === 1) {
       if (isDoorOpen === false) {
+        console.log('updated graphics for lv1')
         $('.img-area').css('background', 'url(assets/L1_closed.png)')
       } else {
         $('.img-area').css('background', 'url(assets/L1_open.png)')
       }
     }
     if (level === 2) {
+      console.log('updated graphics for lv2')
       if (isDoorOpen === false) {
         $('.img-area').css('background', 'url(assets/L2_closed.png)')
       } else {
@@ -167,6 +170,7 @@ $(function() { // On document ready
     }
   }
 
+  updateGraphics()
   getInput()
 
   function checkLv0() {
@@ -205,7 +209,6 @@ $(function() { // On document ready
 
 
     if (isDoorOpen === false) { // IF DOOR IS CLOSED
-      console.log('THE DOOR IS CLOSED')
       while ((foundOpenSynonym === false) && (o < openSynonyms.length)) {
         if (currentInput === openSynonyms[o]) {
           foundOpenSynonym = true;
@@ -225,7 +228,6 @@ $(function() { // On document ready
         c++;
       }
       if (foundOpenSynonym) {
-        console.log('YOU OPEN THE DOOR')
         openDoor.play()
         o = 0;
         $inputLog.prepend('<li class="reply"> you opened the door </li>')
@@ -298,6 +300,7 @@ $(function() { // On document ready
     console.log('LEVEL ONE')
     level = 1;
     updateGraphics()
+    resetValues()
     if (level === 1) {
       if (levelText === false) {
         levelText = true;
@@ -311,7 +314,14 @@ $(function() { // On document ready
   function levelTwo() {
     $inputLog.prepend('<li class="reply"> LEVEL TWO <li>')
     level = 2;
+    resetValues()
     updateGraphics()
+    if (levelText === false) {
+      levelText = true;
+      $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
+      $inputLog.prepend('<li class="reply"> LEVEL TWO - Just a regular locked door <li>')
+      $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
+    }
   }
 
 });
