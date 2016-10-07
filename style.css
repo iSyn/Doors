@@ -16,8 +16,10 @@ body {
 .game-container {
   border: 5px double black;
   background-color: white;
-  width: 70%;
-  height: 80vh;
+  /*width: 70%;*/
+  width: 650px;
+  /*height: 80vh;*/
+  height: 630px;
   margin: 1% auto;
 
 }
