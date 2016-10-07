@@ -36,12 +36,16 @@ $(function() { // On document ready
   var enterSynonyms = [
     'enter', 'enter door', 'enter the door', 'enter room', 'enter the room', 'enter the next room', 'enter next room',
     'go', 'go door', 'go to door', 'go to the door', 'go through door', 'go through the door', 'go through',
-    'go to next level', 'go to the next level'
+    'go to next level', 'go to the next level', 'go in'
   ]
 
   var unlockSynonyms = [
     'unlock', 'unlock door', 'unlock the door', 'turn the lock', 'twist the lock'
     //
+  ]
+
+  var lockSynonyms = [
+    'lock', 'lock door', 'lock the door'
   ]
 
   var keySynonyms = [
@@ -302,11 +306,13 @@ $(function() { // On document ready
     var c = 0;
     var e = 0;
     var u = 0;
+    var l = 0;
 
     var foundOpenSynonym = false;
     var foundCloseSynonym = false;
     var foundEnterSynonym = false;
     var foundUnlockSynonym = false;
+    var foundLockSynonym = false;
 
     if (currentInput === 'help') {
       helpText()
@@ -321,27 +327,98 @@ $(function() { // On document ready
         }
         u++;
       }
+      while (foundOpenSynonym === false && o < openSynonyms.length) {
+        if (currentInput === openSynonyms[o]) {
+          foundOpenSynonym = true;
+        }
+        o++;
+      }
+      while (foundEnterSynonym === false && e < openSynonyms.length) {
+        if (currentInput === enterSynonyms[e]) {
+          foundEnterSynonym = true;
+        }
+        e++;
+      }
+      while (foundCloseSynonym === false && c < openSynonyms.length) {
+        if (currentInput === closeSynonyms[c]) {
+          foundCloseSynonym = true;
+        }
+        c++;
+      }
+      while (foundLockSynonym === false && l < lockSynonyms.length) {
+        if (currentInput === lockSynonyms[l]) {
+          foundLockSynonym = true;
+        }
+        l++;
+      }
+
       if (foundUnlockSynonym) {
         u = 0;
         isDoorLocked = false;
         lockSound.play()
         updateGraphics()
+        $inputLog.prepend('<li class="reply"> You unlocked the door <li>')
+      } else if (foundOpenSynonym) {
+        o = 0;
+        $inputLog.prepend('<li class="reply"> The door is locked <li>')
+      } else if (foundEnterSynonym) {
+        e = 0;
+        $inputLog.prepend('<li class="reply"> The door is closed... HOW YOU GONNA GO THROUGH A DOOR <li>')
+      } else if (foundCloseSynonym) {
+        c = 0;
+        $inputLog.prepend('<li class="reply"> The door is already closed <li>')
+      } else if (foundLockSynonym) {
+        l = 0;
+        $inputLog.prepend('<li class="reply">  <li>')
       }
+
+      } else if (currentInput != 'help' || currentInput != 'hint') {
+        $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
     } else if (isDoorOpen === false && isDoorLocked === false) { // DOOR IS CLOSED AND NOT LOCKED
       while (foundOpenSynonym === false && o < openSynonyms.length) {
         if (currentInput === openSynonyms[o]) {
           foundOpenSynonym = true;
         }
-        o++
+        o++;
+      }
+      while (foundCloseSynonym === false && c < closeSynonyms.length) {
+        if (currentInput === closeSynonyms[c]) {
+          foundCloseSynonym = true;
+        }
+        c++;
+      }
+      while (foundUnlockSynonym === false && u < unlockSynonyms.length) {
+        if (currentInput === unlockSynonyms[u]) {
+          foundUnlockSynonym = true;
+        }
+        u++;
       }
       if (foundOpenSynonym) {
         o = 0;
         isDoorOpen = true;
         openDoor.play()
         updateGraphics()
+      } else if (foundCloseSynonym) {
+        c = 0;
+        $inputLog.prepend('<li class="reply"> The door is already closed <li>')
+      } else if (foundUnlockSynonym) {
+        u = 0;
+        $inputLog.prepend('<li class="reply"> The door is already unlocked! <li>')
+      }
+    } else if (isDoorOpen === true && isDoorLocked === false) { // DOOR IS OPEN
+      while (foundEnterSynonym === false && e < enterSynonyms.length) {
+        if (currentInput === enterSynonyms[e]) {
+          foundEnterSynonym = true;
+        }
+        e++;
+      }
+      if (foundEnterSynonym) {
+        e = 0;
+        $inputLog.prepend('<li class="reply"> you enter the next room <li>')
+        levelThree()
+        resetValues()
       }
     }
-
   }
 
   // Start game
