@@ -56,6 +56,17 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply">' + (hints.levelOne[2]) + '<li>')
         hint = 0
       }
+    } else if (level === 2) {
+      if (hint === 0) {
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[0]) + '<li>')
+        hint++
+      } else if (hint === 1) {
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[1]) + '<li>')
+        hint++
+      } else if (hint === 2) {
+        $inputLog.prepend('<li class="reply">' + (hints.leveltwo[2]) + '<li>')
+        hint = 0
+      }
     }
   }
 
@@ -97,8 +108,20 @@ $(function() { // On document ready
     levelText = false;
     isDoorOpen = false;
     currentInput = "";
-    i=0;
-    x=0;
+    o = 0; // Open
+    c = 0; // Close
+    e = 0; // Enter
+    hint = 0;
+  }
+
+  function helpText() {
+    $inputLog.prepend('<li class="reply"> If you need a little boost, type: "hint" <li>')
+    $inputLog.prepend('<li class="reply"> These are not all of the commands! There are many hidden ones <li>')
+    $inputLog.prepend('<li class="reply"> "go", "enter", "go to next room", etc. <li>')
+    $inputLog.prepend('<li class="reply"> "close", "close door", "close the door", etc.  <li>')
+    $inputLog.prepend('<li class="reply"> "open", "open door", "open the door", etc. <li>')
+    $inputLog.prepend('<li class="reply"> -------------- <li>')
+    $inputLog.prepend('<li class="reply"> BASIC COMMANDS (scroll down) <li>')
   }
 
   function getInput() {
@@ -129,6 +152,8 @@ $(function() { // On document ready
       } else {
         $('.img-area').css('background', 'url(assets/L1_open.png)')
       }
+    } else if (level === 2) {
+      console.log('fuck me there are no graphics')
     }
   }
 
@@ -150,7 +175,7 @@ $(function() { // On document ready
       resetValues()
       levelOne()
     } else {
-      $inputLog.prepend('<li class="error"> command "' + currentInput + '" is not recognized <li>')
+      $inputLog.prepend('<li class="error"> Just type "start" or "start game"... <li>')
     }
   }
 
@@ -162,9 +187,12 @@ $(function() { // On document ready
     var foundCloseSynonym = false;
     var foundEnterSynonym = false;
 
-    if (currentInput === 'hint') {
+    if (currentInput === 'help') {
+      helpText()
+    } else if (currentInput === 'hint') {
       displayHint()
     }
+
 
     if (isDoorOpen === false) { // IF DOOR IS CLOSED
       console.log('THE DOOR IS CLOSED')
@@ -182,8 +210,8 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply"> you opened the door <li>')
         $('.img-area').css('background', 'url(assets/L1_open.png)')
         isDoorOpen = true;
-      } else {
-        $inputLog.prepend('<li class="error"> command "' + currentInput + '" is not recognized <li>')
+      } else if ((currentInput != 'help') && (currentInput != 'hint')) {
+        $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
       while ((foundEnterSynonym === false) && (e < enterSynonyms.length)) {
         if (currentInput === enterSynonyms[e]) {
@@ -218,8 +246,8 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply"> you close the door <li>')
         closeDoor.play()
         isDoorOpen = false;
-      } else {
-        $inputLog.prepend('<li class="error"> command "' + currentInput + '" is not recognized <li>')
+      } else if ((currentInput != 'help') && (currentInput != 'hint')) {
+        $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
     }
   }
@@ -247,15 +275,17 @@ $(function() { // On document ready
     if (level === 1) {
       if (levelText === false) {
         levelText = true;
-        $inputLog.prepend('<li class="reply"> type open door <li>')
-        $inputLog.prepend('<li class="reply"> Welcome to the tutorial level <li>')
-        $inputLog.prepend('<li class="reply"> LEVEL ONE <li>')
+        $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
+        $inputLog.prepend('<li class="reply"> LEVEL ONE - Just a regular door <li>')
+        $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
       }
     }
   }
 
   function levelTwo() {
     $inputLog.prepend('<li class="reply"> LEVEL TWO <li>')
+    level = 2;
+    updateGraphics()
   }
 
 });
