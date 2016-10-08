@@ -16,6 +16,8 @@ $(function() { // On document ready
   var hint = 0
   var isDoorOpen = false;
   var isDoorLocked = true;
+  var isKeyFound = false;
+  var isMatRemoved = false;
 
   var startSynonyms = [
     'start', 'start game', 'start the game'
@@ -52,14 +54,32 @@ $(function() { // On document ready
     'lock', 'lock door', 'lock the door'
   ]
 
-  var keySynonyms = [
-    'key', 'use key', 'use key on door', 'use key on the door'
+  var pickUpSynonyms = [
+    'key',
+    'pick up', 'pick up key', 'pick key up', 'pick up the key', 'pick the key up', 'pick up key from floor',
+    'pick up the key from the floor', 'pick up the key on the floor',
+    'take it', 'take the key', 'take key', 'take the key from the floor', 'take the key on the floor'
+  ]
+
+  var useKeySynonyms = [
+    'key the door',
+    'use key','use the key', 'use key on door', 'use key on the door', 'use the key on door', 'use the key on the door',
+    'unlock', 'unlock door', 'unlock the door', 'unlock the door with key', 'unlock the door with the key',
+    'open door with key', 'open door with the key', 'open the door with key', 'open the door with the key'
+  ]
+
+  var checkMatSynonyms = [
+    'mat',
+    'check mat', 'check the mat', 'check under mat', 'check under the mat',
+    'look mat', 'look at mat', 'look at the mat', 'look under mat', 'look under the mat',
+    'remove mat', 'remove the mat'
   ]
 
   var hints = {
     levelOne: ['do you really need this?', 'type in: open door', 'then type: "enter"'],
     levelTwo: ['the door is locked... what do you do', 'are you sure...', '"unlock door"'],
-    levelThree: ['hint1', 'hint2', 'hint3']
+    levelThree: ['What type of door does it look like?', 'opposite of push', '"pull"'],
+    levelFour: ['hint1', 'hint2', 'hint3']
   }
 
 
@@ -97,6 +117,17 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply">' + (hints.levelThree[2]) + '</li>')
         hint = 0
       }
+    } else if (level === 4) {
+      if (hint === 0) {
+        $inputLog.prepend('<li class="reply">' + (hints.levelFour[0]) + '</li>')
+        hint++
+      } else if (hint === 1) {
+        $inputLog.prepend('<li class="reply">' + (hints.levelFour[1]) + '</li>')
+        hint++
+      } else if (hint === 2) {
+        $inputLog.prepend('<li class="reply">' + (hints.levelFour[2]) + '</li>')
+        hint = 0
+      }
     }
   }
 
@@ -125,8 +156,10 @@ $(function() { // On document ready
     'assets/L1_closed.png','assets/L1_open.png',
     //level two images
     'assets/L2_closedLocked.png', 'assets/L2_closedUnlocked.png', 'assets/L2_open.png',
-    //levle three images
-    'assets/L3_closed.png', 'assets/L3_open.png'
+    //level three images
+    'assets/L3_closed.png', 'assets/L3_open.png',
+    //level four images
+    'assets/L4_keyGone.png', 'assets/L4_matOff.png', 'assets/L4_matOn.png', 'assets/L4_open.png', 'assets/L4_usedKey.png'
     ])
 
   function clearInputBox() {
@@ -186,19 +219,16 @@ $(function() { // On document ready
 
   function updateGraphics() {
     if (level === 0) {
-      console.log('updated graphics for lv0')
       $('.img-area').css('background', 'url(assets/menuDoor.png)')
     }
     if (level === 1) {
       if (isDoorOpen === false) {
-        console.log('updated graphics for lv1')
         $('.img-area').css('background', 'url(assets/L1_closed.png)')
       } else {
         $('.img-area').css('background', 'url(assets/L1_open.png)')
       }
     }
     if (level === 2) {
-      console.log('updated graphics for lv2')
       if (isDoorOpen === false) {
         if (isDoorLocked === true) {
           $('.img-area').css('background', 'url(assets/L2_closedLocked.png)')
@@ -210,7 +240,6 @@ $(function() { // On document ready
       }
     }
     if (level === 3) {
-      console.log('updated graphics for lv3')
       if (isDoorOpen === false) {
         $('.img-area').css('background', 'url(assets/L3_closed.png)')
       } else {
@@ -218,10 +247,18 @@ $(function() { // On document ready
       }
     }
     if (level === 4) {
-      if (isDoorOpen === false) {
-        $('.img-area').css('background', 'url(assets/L4_closed.png)')
-      } else {
-        $('.img-area').css('background', 'url(assets/L4_open.png)')
+      if (!isDoorOpen) {
+        if (isDoorLocked) {
+          if (!isKeyFound) {
+            if (!isMatRemoved) {
+              $('.img-area').css('background', 'url(assets/L4_matOn.png)')
+            } else {
+              $('.img-area').css('background', 'url(assets/L4_matOff.png)')
+            }
+          } else {
+            $('.img-area').css('background', 'url(assets/L4_keyGone.png')
+          }
+        }
       }
     }
   }
@@ -635,6 +672,195 @@ $(function() { // On document ready
     }
   }
 
+  function checkLv4() {
+    var o = 0;
+    var c = 0;
+    var e = 0;
+    var u = 0;
+    var l = 0;
+    var p = 0;
+    var k = 0;
+    var m = 0;
+
+    var foundOpenSynonym = false;
+    var foundCloseSynonym = false;
+    var foundEnterSynonym = false;
+    var foundUnlockSynonym = false;
+    var foundLockSynonym = false;
+    var foundPickUpSynonym = false;
+    var foundUseKeySynonym = false;
+    var foundCheckMatSynonym = false;
+
+    if (currentInput === 'help') {
+      helpText()
+    } else if (currentInput === 'hint') {
+      displayHint()
+    }
+
+    if (!isDoorOpen) {
+      if (isDoorLocked) {
+        if (!isKeyFound) {
+          if (!isMatRemoved) {
+            while (!foundOpenSynonym && o < openSynonyms.length) {
+              if (currentInput === openSynonyms[o]) {
+                foundOpenSynonym = true;
+              }
+              o++;
+            }
+            while (!foundCloseSynonym && c < closeSynonyms.length) {
+              if (currentInput === closeSynonyms[c]) {
+                foundCloseSynonym = true;
+              }
+              c++;
+            }
+            while (!foundEnterSynonym && e < enterSynonyms.length) {
+              if (currentInput === enterSynonyms[e]) {
+                foundEnterSynonym = true;
+              }
+              e++;
+            }
+            while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+              if (currentInput === unlockSynonyms[u]) {
+                foundUnlockSynonym = true;
+              }
+              u++;
+            }
+            while (!foundLockSynonym && l < lockSynonyms.length) {
+              if (currentInput === lockSynonyms[l]) {
+                foundLockSynonym = true;
+              }
+              l++;
+            }
+            while (!foundPickUpSynonym && p < pickUpSynonyms.length) {
+              if (currentInput === pickUpSynonyms[p]) {
+                foundPickUpSynonym = true;
+              }
+              p++;
+            }
+            while(!foundUseKeySynonym && k < useKeySynonyms.length) {
+              if (currentInput === useKeySynonyms[k]) {
+                foundUseKeySynonym = true;
+              }
+              k++;
+            }
+            while(!foundCheckMatSynonym && m < checkMatSynonyms.length) {
+              if (currentInput === checkMatSynonyms[m]) {
+                foundCheckMatSynonym = true;
+              }
+              m++;
+            }
+
+            if (foundOpenSynonym) {
+              o = 0;
+              $inputLog.prepend('<li class="reply"> The door is locked. You need a key! </li>')
+            } else if (foundCloseSynonym) {
+              c = 0;
+              $inputLog.prepend('<li class="reply"> The door is already closed... </li>')
+            } else if (foundEnterSynonym) {
+              e = 0;
+              $inputLog.prepend('<li class="reply"> How you gon enter a closed AND locked door... </li>')
+            } else if (foundUnlockSynonym) {
+              u = 0;
+              $inputLog.prepend('<li class="reply"> You need a key to unlock this door. </li>')
+            } else if (foundLockSynonym) {
+              l = o;
+              $inputLog.prepend('<li class="reply"> No key to lock the door fam. </li>')
+            } else if (foundPickUpSynonym) {
+              p = 0;
+              $inputLog.prepend('<li class="reply"> Where? I don\'t see anything </li>')
+            } else if (foundUseKeySynonym) {
+              k = 0;
+              $inputLog.prepend('<li class="reply"> You dont have a key! </li>')
+            } else if (foundCheckMatSynonym) {
+              m = 0;
+              isMatRemoved = true;
+              updateGraphics();
+              $inputLog.prepend('<li class="reply"> You remove the mat. </li>')
+            } else if (currentInput != 'hint' && currentInput != "help"){
+              $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
+            }
+          } else { // IF MAT IS OFF
+            while (!foundOpenSynonym && o < openSynonyms.length) {
+              if (currentInput === openSynonyms[o]) {
+                foundOpenSynonym = true;
+              }
+              o++;
+            }
+            while (!foundCloseSynonym && c < closeSynonyms.length) {
+              if (currentInput === closeSynonyms[c]) {
+                foundCloseSynonym = true;
+              }
+              c++;
+            }
+            while (!foundEnterSynonym && e < enterSynonyms.length) {
+              if (currentInput === enterSynonyms[e]) {
+                foundEnterSynonym = true;
+              }
+              e++;
+            }
+            while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+              if (currentInput === unlockSynonyms[u]) {
+                foundUnlockSynonym = true;
+              }
+              u++;
+            }
+            while (!foundLockSynonym && l < lockSynonyms.length) {
+              if (currentInput === lockSynonyms[l]) {
+                foundLockSynonym = true;
+              }
+              l++;
+            }
+            while (!foundPickUpSynonym && p < pickUpSynonyms.length) {
+              if (currentInput === pickUpSynonyms[p]) {
+                foundPickUpSynonym = true;
+              }
+              p++;
+            }
+            while(!foundUseKeySynonym && k < useKeySynonyms.length) {
+              if (currentInput === useKeySynonyms[k]) {
+                foundUseKeySynonym = true;
+              }
+              k++;
+            }
+            while(!foundCheckMatSynonym && m < checkMatSynonyms.length) {
+              if (currentInput === checkMatSynonyms[m]) {
+                foundCheckMatSynonym = true;
+              }
+              m++;
+            }
+            if (foundOpenSynonym) {
+              o = 0;
+              $inputLog.prepend('<li class="reply"> The door is locked. </li>')
+            } else if (foundCloseSynonym) {
+              c = 0;
+              $inputLog.prepend('<li class="reply"> The door is already closed. </li>')
+            } else if (foundEnterSynonym) {
+              e = 0;
+              $inputLog.prepend('<li class="reply"> The door is still closed... Find a way to open it. </li>')
+            } else if (foundUnlockSynonym) {
+              u = 0;
+              $inputLog.prepend('<li class="reply"> You don\'t have the key! You need to unlock the door first. </li>')
+            } else if (foundLockSynonym) {
+              l = 0;
+              $inputLog.prepend('<li class="reply"> You don\'t have a key. Why do you want to lock the door anyways. </li>')
+            } else if (foundPickUpSynonym) {
+              p = 0;
+              isKeyFound = true;
+              updateGraphics();
+              $inputLog.prepend('<li class="reply"> You pick up the key. </li>')
+            } else if (foundUseKeySynonym) {
+              k = 0;
+              $inputLog.prepend('<li class="reply"> You dont have the key </li>')
+            } else if (foundCheckMatSynonym) {
+              m = 0;
+              $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Start game
   startGame()
 
@@ -645,7 +871,7 @@ $(function() { // On document ready
       console.log('startGame() function firing')
       if (levelText === false) {
         levelText = true;
-        $inputLog.prepend('<li class="reply"> Type "start" to start the game! <li>')
+        $inputLog.prepend('<li class="reply"> Type "start" to start the game! </li>')
       }
     }
   }
@@ -654,35 +880,35 @@ $(function() { // On document ready
     level = 1;
     updateGraphics()
     resetValues()
-    $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
-    $inputLog.prepend('<li class="reply"> LEVEL ONE - Just a regular door <li>')
-    $inputLog.prepend('<li class="reply"> ------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> ------------------------------- </li>')
+    $inputLog.prepend('<li class="reply"> LEVEL ONE - Just a regular door </li>')
+    $inputLog.prepend('<li class="reply"> ------------------------------- </li>')
   }
 
   function levelTwo() {
     level = 2;
     resetValues()
     updateGraphics()
-    $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
-    $inputLog.prepend('<li class="reply"> LEVEL TWO - Just a regular locked door <li>')
-    $inputLog.prepend('<li class="reply"> -------------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------- </li>')
+    $inputLog.prepend('<li class="reply"> LEVEL TWO - Just a regular locked door </li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------- </li>')
   }
 
   function levelThree() {
     level = 3;
     resetValues()
     updateGraphics()
-    $inputLog.prepend('<li class="reply"> -------------------------------------------- <li>')
-    $inputLog.prepend('<li class="reply"> LEVEL THREE - Just your average one way door <li>')
-    $inputLog.prepend('<li class="reply"> -------------------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------------- </li>')
+    $inputLog.prepend('<li class="reply"> LEVEL THREE - Just your average one way door </li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------------- </li>')
   }
 
   function levelFour() {
     level = 4;
     resetValues()
     updateGraphics()
-    $inputLog.prepend('<li class="reply"> --------------------------------------------- <li>')
-    $inputLog.prepend('<li class="reply"> LEVEL FOUR - Just your average other way door <li>')
-    $inputLog.prepend('<li class="reply"> --------------------------------------------- <li>')
+    $inputLog.prepend('<li class="reply"> ------------------------------------------ </li>')
+    $inputLog.prepend('<li class="reply"> LEVEL FOUR - Just your average locked door </li>')
+    $inputLog.prepend('<li class="reply"> ------------------------------------------ </li>')
   }
 });
