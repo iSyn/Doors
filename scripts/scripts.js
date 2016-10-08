@@ -64,7 +64,7 @@ $(function() { // On document ready
   var useKeySynonyms = [
     'key the door',
     'use key','use the key', 'use key on door', 'use key on the door', 'use the key on door', 'use the key on the door',
-    'unlock', 'unlock door', 'unlock the door', 'unlock the door with key', 'unlock the door with the key',
+    'unlock the door with key', 'unlock the door with the key',
     'open door with key', 'open door with the key', 'open the door with key', 'open the door with the key'
   ]
 
@@ -258,6 +258,8 @@ $(function() { // On document ready
           } else {
             $('.img-area').css('background', 'url(assets/L4_keyGone.png')
           }
+        } else {
+          $('.img-area').css('background', 'url(assets/L4_usedKey.png')
         }
       }
     }
@@ -854,7 +856,88 @@ $(function() { // On document ready
             } else if (foundCheckMatSynonym) {
               m = 0;
               $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
+            } else if (currentInput != 'help' && currentInput != 'hint') {
+              $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
             }
+          }
+        } else { // KEY IS FOUND
+          console.log('key is found')
+          while (!foundOpenSynonym && o < openSynonyms.length) {
+            if (currentInput === openSynonyms[o]) {
+              foundOpenSynonym = true;
+            }
+            o++;
+          }
+          while (!foundCloseSynonym && c < closeSynonyms.length) {
+            if (currentInput === closeSynonyms[c]) {
+              foundCloseSynonym = true;
+            }
+            c++;
+          }
+          while (!foundEnterSynonym && e < enterSynonyms.length) {
+            if (currentInput === enterSynonyms[e]) {
+              foundEnterSynonym = true;
+            }
+            e++;
+          }
+          while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+            if (currentInput === unlockSynonyms[u]) {
+              foundUnlockSynonym = true;
+            }
+            u++;
+          }
+          while (!foundLockSynonym && l < lockSynonyms.length) {
+            if (currentInput === lockSynonyms[l]) {
+              foundLockSynonym = true;
+            }
+            l++;
+          }
+          while (!foundPickUpSynonym && p < pickUpSynonyms.length) {
+            if (currentInput === pickUpSynonyms[p]) {
+              foundPickUpSynonym = true;
+            }
+            p++;
+          }
+          while(!foundUseKeySynonym && k < useKeySynonyms.length) {
+            if (currentInput === useKeySynonyms[k]) {
+              foundUseKeySynonym = true;
+            }
+            k++;
+          }
+          while(!foundCheckMatSynonym && m < checkMatSynonyms.length) {
+            if (currentInput === checkMatSynonyms[m]) {
+              foundCheckMatSynonym = true;
+            }
+            m++;
+          }
+          if (foundOpenSynonym) {
+            o = 0;
+            $inputLog.prepend('<li class="reply"> Unlock the door first! Jeeez... </li>')
+          } else if (foundCloseSynonym) {
+            c = 0;
+            $inputLog.prepend('<li class="reply"> The door is already closed. </li>')
+          } else if (foundEnterSynonym) {
+            e = 0;
+            $inputLog.prepend('<li class="reply"> The door is closed. Open it first! </li>')
+          } else if (foundUnlockSynonym) {
+            u = 0;
+            $inputLog.prepend('<li class="reply"> Use the key to unlock the door! </li>')
+          } else if (foundLockSynonym) {
+            l = 0;
+            $inputLog.prepend('<li class="reply"> The door is already locked. </li>')
+          } else if (foundPickUpSynonym) {
+            p = 0;
+            $inputLog.prepend('<li class="reply"> You already have the key! </li>')
+          } else if (foundUseKeySynonym) {
+            k = 0;
+            isDoorLocked = false;
+            updateGraphics();
+            $inputLog.prepend('<li class="reply"> You unlock the door!</li>')
+          } else if (foundCheckMatSynonym) {
+            m = 0;
+            $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
+          } else if (currentInput != 'hint' && currentInput != 'help') {
+            $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
           }
         }
       }
