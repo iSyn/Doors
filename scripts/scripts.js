@@ -64,8 +64,10 @@ $(function() { // On document ready
   var useKeySynonyms = [
     'key the door',
     'use key','use the key', 'use key on door', 'use key on the door', 'use the key on door', 'use the key on the door',
-    'unlock the door with key', 'unlock the door with the key',
-    'open door with key', 'open door with the key', 'open the door with key', 'open the door with the key'
+    'unlock the door with key', 'unlock the door with the key', 'unlock door with key',
+    'open door with key', 'open door with the key', 'open the door with key', 'open the door with the key',
+    'put key in door', 'put the key in door', 'put the key in the door', 'put key in the door',
+    'put key in lock', 'put the key in lock', 'put the key in lock', 'put the key in the lock'
   ]
 
   var checkMatSynonyms = [
@@ -79,7 +81,7 @@ $(function() { // On document ready
     levelOne: ['do you really need this?', 'type in: open door', 'then type: "enter"'],
     levelTwo: ['the door is locked... what do you do', 'are you sure...', '"unlock door"'],
     levelThree: ['What type of door does it look like?', 'opposite of push', '"pull"'],
-    levelFour: ['hint1', 'hint2', 'hint3']
+    levelFour: ['that mat looks suspicious', 'check under the mat', 'get the key from under the mat, then unlock the door!']
   }
 
 
@@ -213,6 +215,10 @@ $(function() { // On document ready
             checkLv4()
           }
         }
+        if (currentInput === 'secret') {
+          level = 'secret'
+          secretLevel();
+        }
       }
     })
   }
@@ -256,12 +262,18 @@ $(function() { // On document ready
               $('.img-area').css('background', 'url(assets/L4_matOff.png)')
             }
           } else {
-            $('.img-area').css('background', 'url(assets/L4_keyGone.png')
+            $('.img-area').css('background', 'url(assets/L4_keyGone.png)')
           }
         } else {
-          $('.img-area').css('background', 'url(assets/L4_usedKey.png')
+          $('.img-area').css('background', 'url(assets/L4_usedKey.png)')
         }
+      } else {
+        $('.img-area').css('background', 'url(assets/L4_open.png)')
       }
+    }
+    if (level === 'secret') {
+      console.log('updated graphics to secret')
+      $('.img-area').css('background', 'url(https://media.giphy.com/media/Z7BAIKRznBmPC/giphy.gif)')
     }
   }
 
@@ -670,6 +682,8 @@ $(function() { // On document ready
         resetValues();
         levelFour();
         $inputLog.prepend('<li class="reply"> You approach the next door. <li>')
+      } else if (currentInput != 'hint' && currentInput != 'help') {
+        $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
       }
     }
   }
@@ -861,7 +875,6 @@ $(function() { // On document ready
             }
           }
         } else { // KEY IS FOUND
-          console.log('key is found')
           while (!foundOpenSynonym && o < openSynonyms.length) {
             if (currentInput === openSynonyms[o]) {
               foundOpenSynonym = true;
@@ -940,9 +953,172 @@ $(function() { // On document ready
             $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
           }
         }
+      } else { // DOOR IS UNLOCKED
+        while (!foundOpenSynonym && o < openSynonyms.length) {
+            if (currentInput === openSynonyms[o]) {
+              foundOpenSynonym = true;
+            }
+            o++;
+          }
+          while (!foundCloseSynonym && c < closeSynonyms.length) {
+            if (currentInput === closeSynonyms[c]) {
+              foundCloseSynonym = true;
+            }
+            c++;
+          }
+          while (!foundEnterSynonym && e < enterSynonyms.length) {
+            if (currentInput === enterSynonyms[e]) {
+              foundEnterSynonym = true;
+            }
+            e++;
+          }
+          while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+            if (currentInput === unlockSynonyms[u]) {
+              foundUnlockSynonym = true;
+            }
+            u++;
+          }
+          while (!foundLockSynonym && l < lockSynonyms.length) {
+            if (currentInput === lockSynonyms[l]) {
+              foundLockSynonym = true;
+            }
+            l++;
+          }
+          while (!foundPickUpSynonym && p < pickUpSynonyms.length) {
+            if (currentInput === pickUpSynonyms[p]) {
+              foundPickUpSynonym = true;
+            }
+            p++;
+          }
+          while(!foundUseKeySynonym && k < useKeySynonyms.length) {
+            if (currentInput === useKeySynonyms[k]) {
+              foundUseKeySynonym = true;
+            }
+            k++;
+          }
+          while(!foundCheckMatSynonym && m < checkMatSynonyms.length) {
+            if (currentInput === checkMatSynonyms[m]) {
+              foundCheckMatSynonym = true;
+            }
+            m++;
+          }
+          if (foundOpenSynonym) {
+            o = 0;
+            isDoorOpen = true;
+            updateGraphics();
+            openDoor.play();
+            $inputLog.prepend('<li class="reply"> You open the door </li>')
+          } else if (foundCloseSynonym) {
+            c = 0;
+            $inputLog.prepend('<li class="reply"> The door is closed human. Open it first </li>')
+          } else if (foundEnterSynonym) {
+            e = 0;
+            $inputLog.prepend('<li class="reply"> The door is closed. Just open it now! </li>')
+          } else if (foundUnlockSynonym) {
+            u = 0;
+            $inputLog.prepend('<li class="reply"> The door is already unlocked. Just open it now! </li>')
+          } else if (foundLockSynonym) {
+            l = 0;
+            isDoorLocked = true;
+            updateGraphics();
+            $inputLog.prepend('<li class="reply"> You lock the door... Why? I have no idea... </li>')
+          } else if (foundPickUpSynonym) {
+            p = 0;
+            $inputLog.prepend('<li class="reply"> There is nothing left to pick up </li>')
+          } else if (foundUseKeySynonym) {
+            k = 0;
+            $inputLog.prepend('<li class="reply"> The door is already unlocked! </li>')
+          } else if (foundCheckMatSynonym) {
+            m = 0;
+            $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
+          } else if (currentInput != 'hint' && currentInput != 'help') {
+            $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
+          }
+        }
+      } else { // DOOR IS OPEN
+        console.log('the door is now open')
+        while (!foundOpenSynonym && o < openSynonyms.length) {
+          if (currentInput === openSynonyms[o]) {
+            foundOpenSynonym = true;
+          }
+          o++;
+        }
+        while (!foundCloseSynonym && c < closeSynonyms.length) {
+          if (currentInput === closeSynonyms[c]) {
+            foundCloseSynonym = true;
+          }
+          c++;
+        }
+        while (!foundEnterSynonym && e < enterSynonyms.length) {
+          if (currentInput === enterSynonyms[e]) {
+            foundEnterSynonym = true;
+          }
+          e++;
+        }
+        while (!foundUnlockSynonym && u < unlockSynonyms.length) {
+          if (currentInput === unlockSynonyms[u]) {
+            foundUnlockSynonym = true;
+          }
+          u++;
+        }
+        while (!foundLockSynonym && l < lockSynonyms.length) {
+          if (currentInput === lockSynonyms[l]) {
+            foundLockSynonym = true;
+          }
+          l++;
+        }
+        while (!foundPickUpSynonym && p < pickUpSynonyms.length) {
+          if (currentInput === pickUpSynonyms[p]) {
+            foundPickUpSynonym = true;
+          }
+          p++;
+        }
+        while(!foundUseKeySynonym && k < useKeySynonyms.length) {
+          if (currentInput === useKeySynonyms[k]) {
+            foundUseKeySynonym = true;
+          }
+          k++;
+        }
+        while(!foundCheckMatSynonym && m < checkMatSynonyms.length) {
+          if (currentInput === checkMatSynonyms[m]) {
+            foundCheckMatSynonym = true;
+          }
+          m++;
+        }
+        if (foundOpenSynonym) {
+          o = 0;
+          $inputLog.prepend('<li class="reply"> The door is already open man! </li>')
+        } else if (foundCloseSynonym) {
+          c = 0;
+          isDoorOpen = false;
+          updateGraphics();
+          closeDoor.play();
+          $inputLog.prepend('<li class="reply"> Ugh... you close the door. </li>')
+        } else if (foundEnterSynonym) {
+          e = 0;
+          level = 0;
+          updateGraphics();
+          $inputLog.prepend('<li class="reply"> YOU BEAT THE GAME! WOOOOOO </li>')
+        } else if (foundUnlockSynonym) {
+          u = 0;
+          $inputLog.prepend('<li class="reply"> The door is already unlocked... And it\'s open too... </li>')
+        } else if (foundLockSynonym) {
+          l = 0;
+          $inputLog.prepend('<li class="reply"> Ya gotta close the door first to lock it! </li>')
+        } else if (foundPickUpSynonym) {
+          p = 0;
+          $inputLog.prepend('<li class="reply"> There is nothing left to pick up </li>')
+        } else if (foundUseKeySynonym) {
+          k = 0;
+          $inputLog.prepend('<li class="reply"> The door is already unlocked! JUST GO THROUGH THE DOOR!</li>')
+        } else if (foundCheckMatSynonym) {
+          m = 0;
+          $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
+        } else if (currentInput != 'hint' && currentInput != 'help') {
+          $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
+        }
       }
     }
-  }
 
   // Start game
   startGame()
@@ -994,4 +1170,15 @@ $(function() { // On document ready
     $inputLog.prepend('<li class="reply"> LEVEL FOUR - Just your average locked door </li>')
     $inputLog.prepend('<li class="reply"> ------------------------------------------ </li>')
   }
+
+  //////////////////////////////////////////////////////////////////////
+
+  function secretLevel() {
+    level = 'secret'
+    updateGraphics();
+    console.log('YOU ARE NOW IN THE SECRET LEVEL')
+  }
+
+
+
 });
