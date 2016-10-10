@@ -107,6 +107,7 @@ SECRET LEVEL SHIT
 */
 
 .lives {
+  font-family: 'Unica One', cursive;
   color: white;
   font-size: 25px;
   float: left;
@@ -115,6 +116,7 @@ SECRET LEVEL SHIT
 }
 
 .score {
+  font-family: 'Unica One', cursive;
   color: white;
   font-size: 25px;
   float: right;
@@ -138,4 +140,15 @@ SECRET LEVEL SHIT
   width: 100%;
   background-color: red;
   opacity: .3;
+}
+
+.game-over {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Unica One', cursive;
+  font-size: 30px;
 }

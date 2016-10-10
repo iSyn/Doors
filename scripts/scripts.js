@@ -1241,16 +1241,6 @@ $(function() { // On document ready
     }
   }
 
-
-  function backToMain() {
-    bgm_secret.pause();
-    level = 0;
-    updateGraphics()
-    bgm_main.play()
-    livesText.hide()
-    scoreText.hide()
-  }
-
   function spawnShips() {
     if (level === 'secret'){
       setInterval(function(){
@@ -1271,24 +1261,37 @@ $(function() { // On document ready
             position: 'absolute'
           })
         }
+        ship.alive = true;
+        ship.click(function(){
+          ship.remove();
+          ship.alive = false;
+        })
 
         $('.img-area').append(ship)
 
         if (level === 'secret') {
-          $('.attacking-door').animate({
+          ship.animate({
             width: newWidth,
             height: newHeight
-          }, 4000, function(){
-            this.remove()
-            amountOfLives = amountOfLives - 1;
-            damageTaken()
+          }, 4000,  function(){
+            if (ship.alive === true){
+              amountOfLives--;
+              ship.remove();
+              damageTaken();
+            }
             livesText.text('Lives: ' + amountOfLives)
 
             if (amountOfLives === 0) {
               console.log('YA LOSE')
               $inputLog.prepend('<li class="reply"> YOUR FINAL SCORE IS: ' + scorePoint + ' </li>')
               $inputLog.prepend('<li class="reply"> YOU LOSE! </li>')
-              backToMain()
+              var gameOverScreen = $('div')
+              gameOverScreen.text('GAME OVER! YOUR FINAL SCORE IS: ' + scorePoint)
+              gameOverScreen.addClass('game-over')
+
+              setTimeout(function(){
+                location.reload()
+              },2500)
             }
           })
         }
@@ -1314,6 +1317,9 @@ $(function() { // On document ready
 
     bgm_main.pause()
     bgm_secret.play()
+
+    var header = $('.header')
+    header.css('text-decoration', 'line-through')
 
     $('li').empty()
     level = 'secret'
