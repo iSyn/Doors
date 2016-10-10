@@ -133,10 +133,13 @@ $(function() { // On document ready
     }
   }
 
-  var closeDoor = document.createElement("audio");
-  var openDoor = document.createElement("audio");
+  var closeDoor = document.createElement("audio")
+  var openDoor = document.createElement("audio")
   var lockSound = document.createElement("audio")
-
+  var shootSound = document.createElement('audio')
+  var bgm_main = document.createElement('audio')
+  var carpet_shuffle = document.createElement('audio')
+  var keyJingle = document.createElement('audio')
 
   closeDoor.src="assets/sfx/closeDoor.mp3";
   closeDoor.preLoad=true;
@@ -144,8 +147,20 @@ $(function() { // On document ready
   openDoor.preLoad=true;   
   lockSound.src='assets/sfx/lock.mp3';
   lockSound.preLoad=true;
- 
+  shootSound.src='assets/sfx/shoot.wav';
+  shootSound.preLoad=true;
+  shootSound.volume=0.5;
+  bgm_main.src='assets/sfx/bgm_main.wav'
+  bgm_main.preLoad=true;
+  bgm_main.loop=true;
+  bgm_main.volume=0.2;
+  carpet_shuffle.src='assets/sfx/carpet_shuffle.wav'
+  carpet_shuffle.preLoad=true;
+  keyJingle.src='assets/sfx/pickupKey.wav'
+  keyJingle.preLoad=true;
 
+ 
+  bgm_main.play()
 
   function preloadImages(arrayOfImages) {
     $(arrayOfImages).each(function() {
@@ -791,6 +806,7 @@ $(function() { // On document ready
               m = 0;
               isMatRemoved = true;
               updateGraphics();
+              carpet_shuffle.play();
               $inputLog.prepend('<li class="reply"> You remove the mat. </li>')
             } else if (currentInput != 'hint' && currentInput != "help" && currentInput != 'secret'){
               $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
@@ -862,6 +878,7 @@ $(function() { // On document ready
             } else if (foundPickUpSynonym) {
               p = 0;
               isKeyFound = true;
+              keyJingle.play();
               updateGraphics();
               $inputLog.prepend('<li class="reply"> You pick up the key. </li>')
             } else if (foundUseKeySynonym) {
@@ -944,6 +961,7 @@ $(function() { // On document ready
           } else if (foundUseKeySynonym) {
             k = 0;
             isDoorLocked = false;
+            lockSound.play();
             updateGraphics();
             $inputLog.prepend('<li class="reply"> You unlock the door!</li>')
           } else if (foundCheckMatSynonym) {
@@ -1190,6 +1208,21 @@ $(function() { // On document ready
   var newWidth = 120;
   var newHeight = 180;
 
+  var boomSound1 = document.createElement('audio')
+  var boomSound2 = document.createElement('audio')
+  var boomSound3 = document.createElement('audio')
+  var bgm_secret = document.createElement('audio')
+
+  boomSound1.src='assets/sfx/boom1.wav'
+  boomSound1.preLoad=true;
+  boomSound2.src='assets/sfx/boom2.wav'
+  boomSound2.preLoad=true;
+  boomSound3.src='assets/sfx/boom3.wav'
+  boomSound3.preLoad=true;
+  bgm_secret.src='assets/sfx/bgm_secret.wav'
+  bgm_secret.preload=true;
+  bgm_secret.loop=true;
+
   livesText.hide()
   scoreText.hide()
 
@@ -1218,16 +1251,36 @@ $(function() { // On document ready
       $('.attacking-door').animate({
         width: newWidth,
         height: newHeight
-      }, 3000)
+      }, 4000, function(){
+        this.remove()
+        amountOfLives--;
+        livesText.text('Lives: ' + amountOfLives)
+
+        if (amountOfLives <= 0) {
+          console.log('YA LOSE')
+        }
+      })
 
       $('.attacking-door').click(function(){
         this.remove()
         scorePoint += 10;
+        scoreText.text('Score: ' + (scorePoint))
+        var randomNumber = (Math.floor(Math.random() * 3) + 1)
+        if (randomNumber === 1) {
+          boomSound1.play()
+        } else if (randomNumber === 2) {
+          boomSound2.play()
+        } else {
+          boomSound3.play()
+        }
       })
     }, 2000)
   }
 
   function secretLevel() {
+
+    bgm_main.pause()
+    bgm_secret.play()
 
     $('li').empty()
     level = 'secret'
@@ -1245,13 +1298,13 @@ $(function() { // On document ready
     }, 500);
     setTimeout(function(){
       $inputLog.prepend('<li class="error"> 3... </li>');
-    }, 1100);
+    }, 2000);
     setTimeout(function(){
       $inputLog.prepend('<li class="error"> 2... </li>');
-    }, 2300);
+    }, 3000);
     setTimeout(function(){
       $inputLog.prepend('<li class="error"> 1... </li>');
-    }, 3400);
+    }, 4000);
     setTimeout(function(){
       $inputLog.prepend('<li class="error"> GO! GO! GO! </li>');
       spawnShips();
@@ -1259,6 +1312,10 @@ $(function() { // On document ready
 
     livesText.text('Lives: ' + amountOfLives)
     scoreText.text('Score: ' + scorePoint)
+
+    $('.img-area').click(function(){
+      shootSound.play()
+    })
 
   }
 
