@@ -48,6 +48,7 @@ body {
   background-color: black;
   background-size: cover;
   background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .caret {
@@ -97,4 +98,34 @@ body {
 
 .error {
   color: red;
+}
+
+/*
+////////////////////////////////////////////////////////////////////////
+SECRET LEVEL SHIT
+////////////////////////////////////////////////////////////////////////
+*/
+
+.lives {
+  color: white;
+  font-size: 25px;
+  float: left;
+  display: inline;
+  margin: 0;
+}
+
+.score {
+  color: white;
+  font-size: 25px;
+  float: right;
+  display: inline;
+  margin: 0;
+}
+
+.attacking-door {
+  position: relative;
+  height: 30px;
+  width: 20px;
+  background-color: #331a00;
+  border: 2px solid white;
 }

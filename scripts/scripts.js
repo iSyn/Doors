@@ -6,6 +6,7 @@ $(function() { // On document ready
   console.log('/         *        by Synclair Wang       *          /')
   console.log('//////////////////////////////////////////////////////')
 
+
   var $playerInput = $('#player-input');
   var gameStarted = false;
   var currentInput = "";
@@ -64,8 +65,7 @@ $(function() { // On document ready
   var useKeySynonyms = [
     'key the door',
     'use key','use the key', 'use key on door', 'use key on the door', 'use the key on door', 'use the key on the door',
-    'unlock the door with key', 'unlock the door with the key', 'unlock door with key',
-    'open door with key', 'open door with the key', 'open the door with key', 'open the door with the key',
+    'unlock the door with key', 'unlock the door with the key', 'unlock door with key', 'unlock door with the key',
     'put key in door', 'put the key in door', 'put the key in the door', 'put key in the door',
     'put key in lock', 'put the key in lock', 'put the key in lock', 'put the key in the lock'
   ]
@@ -295,7 +295,7 @@ $(function() { // On document ready
       console.log('game starting')
       resetValues()
       levelOne()
-    } else {
+    } else if (currentInput != 'secret'){
       $inputLog.prepend('<li class="error"> Just type "start" or "start game"... </li>')
     }
   }
@@ -345,7 +345,7 @@ $(function() { // On document ready
         c = 0;
       } else if (foundEnterSynonym) {
         $inputLog.prepend('<li class="reply">How does one enter a closed door... </li>')
-      } else if ((currentInput != 'help') && (currentInput != 'hint')) {
+      } else if ((currentInput != 'help') && (currentInput != 'hint') && (currentInput != 'secret')) {
         $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
       }
     } else { // IF DOOR IS OPEN
@@ -381,7 +381,7 @@ $(function() { // On document ready
         $inputLog.prepend('<li class="reply"> you close the door <li>')
         closeDoor.play()
         isDoorOpen = false;
-      } else if ((currentInput != 'help') && (currentInput != 'hint')) {
+      } else if ((currentInput != 'help') && (currentInput != 'hint') && (currentInput != 'secret')) {
         $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
     }
@@ -455,7 +455,7 @@ $(function() { // On document ready
       } else if (foundEnterSynonym) {
         e = 0;
         $inputLog.prepend('<li class="reply"> How does one enter a closed door... ARE YOU A GHOST? <li>')
-      } else if (currentInput != 'help' && currentInput != 'hint') {
+      } else if (currentInput != 'help' && currentInput != 'hint' && currentInput != 'secret') {
         $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
     } else if (!isDoorOpen && !isDoorLocked) { // CLOSED AND UNLOCKED
@@ -510,7 +510,7 @@ $(function() { // On document ready
       } else if (foundEnterSynonym) {
         e = 0;
         $inputLog.prepend('<li class="reply"> You can\'t enter a closed door! Open it first. <li>')
-      } else if (currentInput != 'hint' && currentInput != 'help') {
+      } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
         $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
     } else if (isDoorOpen === true && !isDoorLocked) { // UNLOCKED AND OPEN
@@ -564,7 +564,7 @@ $(function() { // On document ready
         resetValues();
         $inputLog.prepend('<li class="reply"> You approach the next door. <li>')
         levelThree();
-      } else if (currentInput != 'hint' && currentInput != 'help') {
+      } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
         $inputLog.prepend('<li class="error"> command "' + currentInput + '" not recognized. Type "help" for a list of commands. <li>')
       }
     }
@@ -646,7 +646,7 @@ $(function() { // On document ready
       } else if (foundEnterSynonym) {
         e = 0;
         $inputLog.prepend('<li class="reply"> The door is shut for gods sake... <li>')
-      } else if (currentInput != 'hint' && currentInput != 'help') {
+      } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
         $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
       }
     } else { // DOOR IS OPEN
@@ -682,7 +682,7 @@ $(function() { // On document ready
         resetValues();
         levelFour();
         $inputLog.prepend('<li class="reply"> You approach the next door. <li>')
-      } else if (currentInput != 'hint' && currentInput != 'help') {
+      } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
         $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
       }
     }
@@ -792,7 +792,7 @@ $(function() { // On document ready
               isMatRemoved = true;
               updateGraphics();
               $inputLog.prepend('<li class="reply"> You remove the mat. </li>')
-            } else if (currentInput != 'hint' && currentInput != "help"){
+            } else if (currentInput != 'hint' && currentInput != "help" && currentInput != 'secret'){
               $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
             }
           } else { // IF MAT IS OFF
@@ -870,7 +870,7 @@ $(function() { // On document ready
             } else if (foundCheckMatSynonym) {
               m = 0;
               $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
-            } else if (currentInput != 'help' && currentInput != 'hint') {
+            } else if (currentInput != 'help' && currentInput != 'hint' && currentInput != 'secret') {
               $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
             }
           }
@@ -949,7 +949,7 @@ $(function() { // On document ready
           } else if (foundCheckMatSynonym) {
             m = 0;
             $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
-          } else if (currentInput != 'hint' && currentInput != 'help') {
+          } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
             $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
           }
         }
@@ -1031,7 +1031,7 @@ $(function() { // On document ready
           } else if (foundCheckMatSynonym) {
             m = 0;
             $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
-          } else if (currentInput != 'hint' && currentInput != 'help') {
+          } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
             $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
           }
         }
@@ -1098,6 +1098,7 @@ $(function() { // On document ready
           e = 0;
           level = 0;
           updateGraphics();
+          $inputLog.prepend('<li class="reply"> TYPE IN THE COMMANDS: "SECRET" </li>')
           $inputLog.prepend('<li class="reply"> YOU BEAT THE GAME! WOOOOOO </li>')
         } else if (foundUnlockSynonym) {
           u = 0;
@@ -1114,7 +1115,7 @@ $(function() { // On document ready
         } else if (foundCheckMatSynonym) {
           m = 0;
           $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
-        } else if (currentInput != 'hint' && currentInput != 'help') {
+        } else if (currentInput != 'hint' && currentInput != 'help' && currentInput != 'secret') {
           $inputLog.prepend('<li class="error"> Command "' + currentInput + '" not recognized. Type "help" for a list of commands. </li>')
         }
       }
@@ -1136,6 +1137,7 @@ $(function() { // On document ready
   }
 
   function levelOne() {
+    $('li').empty()
     level = 1;
     updateGraphics()
     resetValues()
@@ -1145,6 +1147,7 @@ $(function() { // On document ready
   }
 
   function levelTwo() {
+    $('li').empty()
     level = 2;
     resetValues()
     updateGraphics()
@@ -1154,6 +1157,7 @@ $(function() { // On document ready
   }
 
   function levelThree() {
+    $('li').empty()
     level = 3;
     resetValues()
     updateGraphics()
@@ -1163,6 +1167,7 @@ $(function() { // On document ready
   }
 
   function levelFour() {
+    $('li').empty()
     level = 4;
     resetValues()
     updateGraphics()
@@ -1171,14 +1176,90 @@ $(function() { // On document ready
     $inputLog.prepend('<li class="reply"> ------------------------------------------ </li>')
   }
 
+  /*
   //////////////////////////////////////////////////////////////////////
+  SECRET LEVEL SHIT
+  //////////////////////////////////////////////////////////////////////
+  */
 
-  function secretLevel() {
-    level = 'secret'
-    updateGraphics();
-    console.log('YOU ARE NOW IN THE SECRET LEVEL')
+  var livesText = $('.lives')
+  var scoreText = $('.score')
+  var amountOfLives = 3;
+  var scorePoint = 0;
+  var gameScreen = $('.img-area')
+  var newWidth = 120;
+  var newHeight = 180;
+
+  livesText.hide()
+  scoreText.hide()
+
+  function spawnShips() {
+
+    setInterval(function(){
+
+      // PICK RANDOM LOCATION
+      var windowWidth = $('.img-area').width()
+      var windowHeight = $('.img-area').height()
+      var randWidth = Math.floor((Math.random()*windowWidth))
+      var randHeight = Math.floor((Math.random()*windowHeight))
+
+      // MAKING THE DOORS
+      var ship = $('<div>')
+      ship.addClass('attacking-door')
+      ship.css({
+        top: randHeight,
+        left: randWidth,
+        position: 'absolute'
+      })
+
+      $('.img-area').append(ship)
+
+
+      $('.attacking-door').animate({
+        width: newWidth,
+        height: newHeight
+      }, 3000)
+
+      $('.attacking-door').click(function(){
+        this.remove()
+        scorePoint += 10;
+      })
+    }, 2000)
   }
 
+  function secretLevel() {
 
+    $('li').empty()
+    level = 'secret'
+    updateGraphics()
+    livesText.show()
+    scoreText.show()
+    console.log('YOU ARE NOW IN THE SECRET LEVEL')
+
+    $inputLog.prepend('<li class="reply"> -------------------------------------- </li>')
+    $inputLog.prepend('<li class="reply"> LEVEL ??? - BEWARE OF THE RABID DOORS! </li>')
+    $inputLog.prepend('<li class="reply"> -------------------------------------- </li>')
+
+    setTimeout(function(){
+      $inputLog.prepend('<li class="error"> GET READY FOR DANGEROUS ALIEN DOORS! CLICK THEM TO DESTROY THEM! DONT LET THEM REACH YOU!</li>');
+    }, 500);
+    setTimeout(function(){
+      $inputLog.prepend('<li class="error"> 3... </li>');
+    }, 1100);
+    setTimeout(function(){
+      $inputLog.prepend('<li class="error"> 2... </li>');
+    }, 2300);
+    setTimeout(function(){
+      $inputLog.prepend('<li class="error"> 1... </li>');
+    }, 3400);
+    setTimeout(function(){
+      $inputLog.prepend('<li class="error"> GO! GO! GO! </li>');
+      spawnShips();
+    }, 4500);
+
+    livesText.text('Lives: ' + amountOfLives)
+    scoreText.text('Score: ' + scorePoint)
+
+  }
 
 });
