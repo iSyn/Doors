@@ -1209,6 +1209,7 @@ $(function() { // On document ready
   var gameScreen = $('.img-area')
   var newWidth = 120;
   var newHeight = 180;
+  var spawnTimer = 2500;
 
 
   var boomSound1 = document.createElement('audio')
@@ -1261,6 +1262,7 @@ $(function() { // On document ready
             position: 'absolute'
           })
         }
+
         ship.alive = true;
         ship.click(function(){
           ship.remove();
@@ -1291,7 +1293,7 @@ $(function() { // On document ready
 
               setTimeout(function(){
                 location.reload()
-              },2500)
+              },4000)
             }
           })
         }
@@ -1309,9 +1311,12 @@ $(function() { // On document ready
             boomSound3.play()
           }
         })
-      }, 2000)
-    }
+      }, spawnTimer)
+    } setTimeout(function(){
+      spawnShips()
+    },2000)
   }
+
 
   function secretLevel() {
 
