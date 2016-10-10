@@ -1143,6 +1143,8 @@ $(function() { // On document ready
   startGame()
 
   function startGame() {
+    level = 0;
+    updateGraphics();
     console.log('START GAME')
     if (gameStarted === false) {
       gameStarted = true;
@@ -1208,6 +1210,7 @@ $(function() { // On document ready
   var newWidth = 120;
   var newHeight = 180;
 
+
   var boomSound1 = document.createElement('audio')
   var boomSound2 = document.createElement('audio')
   var boomSound3 = document.createElement('audio')
@@ -1226,55 +1229,85 @@ $(function() { // On document ready
   livesText.hide()
   scoreText.hide()
 
+
+  function damageTaken() {
+    if (level === 'secret') {
+      var newDiv = $('<div>')
+      newDiv.addClass('damage-taken')
+      $('.img-area').append(newDiv)
+      setTimeout(function(){
+        newDiv.remove()
+      },100)
+    }
+  }
+
+
+  function backToMain() {
+    bgm_secret.pause();
+    level = 0;
+    updateGraphics()
+    bgm_main.play()
+    livesText.hide()
+    scoreText.hide()
+  }
+
   function spawnShips() {
+    if (level === 'secret'){
+      setInterval(function(){
 
-    setInterval(function(){
+        // PICK RANDOM LOCATION
+        var windowWidth = $('.img-area').width()
+        var windowHeight = $('.img-area').height()
+        var randWidth = Math.floor((Math.random()*windowWidth))
+        var randHeight = Math.floor((Math.random()*windowHeight))
 
-      // PICK RANDOM LOCATION
-      var windowWidth = $('.img-area').width()
-      var windowHeight = $('.img-area').height()
-      var randWidth = Math.floor((Math.random()*windowWidth))
-      var randHeight = Math.floor((Math.random()*windowHeight))
-
-      // MAKING THE DOORS
-      var ship = $('<div>')
-      ship.addClass('attacking-door')
-      ship.css({
-        top: randHeight,
-        left: randWidth,
-        position: 'absolute'
-      })
-
-      $('.img-area').append(ship)
-
-
-      $('.attacking-door').animate({
-        width: newWidth,
-        height: newHeight
-      }, 4000, function(){
-        this.remove()
-        amountOfLives--;
-        livesText.text('Lives: ' + amountOfLives)
-
-        if (amountOfLives <= 0) {
-          console.log('YA LOSE')
+        // MAKING THE DOORS
+        if (level === 'secret'){
+          var ship = $('<div>')
+          ship.addClass('attacking-door')
+          ship.css({
+            top: randHeight,
+            left: randWidth,
+            position: 'absolute'
+          })
         }
-      })
 
-      $('.attacking-door').click(function(){
-        this.remove()
-        scorePoint += 10;
-        scoreText.text('Score: ' + (scorePoint))
-        var randomNumber = (Math.floor(Math.random() * 3) + 1)
-        if (randomNumber === 1) {
-          boomSound1.play()
-        } else if (randomNumber === 2) {
-          boomSound2.play()
-        } else {
-          boomSound3.play()
+        $('.img-area').append(ship)
+
+        if (level === 'secret') {
+          $('.attacking-door').animate({
+            width: newWidth,
+            height: newHeight
+          }, 4000, function(){
+            this.remove()
+            amountOfLives = amountOfLives - 1;
+            damageTaken()
+            livesText.text('Lives: ' + amountOfLives)
+
+            if (amountOfLives === 0) {
+              console.log('YA LOSE')
+              $inputLog.prepend('<li class="reply"> YOUR FINAL SCORE IS: ' + scorePoint + ' </li>')
+              $inputLog.prepend('<li class="reply"> YOU LOSE! </li>')
+              backToMain()
+            }
+          })
         }
-      })
-    }, 2000)
+
+        $('.attacking-door').click(function(){
+          this.remove()
+          scorePoint += 10;
+          scoreText.text('Score: ' + (scorePoint))
+          var randomNumber = (Math.floor(Math.random() * 3) + 1)
+          if (randomNumber === 1) {
+            boomSound1.play()
+          } else if (randomNumber === 2) {
+            boomSound2.play()
+          } else {
+            boomSound3.play()
+          }
+        })
+      }, 2000)
+    }
   }
 
   function secretLevel() {
@@ -1294,7 +1327,7 @@ $(function() { // On document ready
     $inputLog.prepend('<li class="reply"> -------------------------------------- </li>')
 
     setTimeout(function(){
-      $inputLog.prepend('<li class="error"> GET READY FOR DANGEROUS ALIEN DOORS! CLICK THEM TO DESTROY THEM! DONT LET THEM REACH YOU!</li>');
+      $inputLog.prepend('<li class="error"> GET READY FOR <span class="aliens">DANGEROUS ALIEN DOORS! </span> CLICK THEM TO DESTROY THEM! DONT LET THEM REACH YOU!</li>');
     }, 500);
     setTimeout(function(){
       $inputLog.prepend('<li class="error"> 3... </li>');

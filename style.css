@@ -124,5 +124,18 @@ SECRET LEVEL SHIT
 
 .attacking-door {
   background-color: #331a00;
+  max-height: 100%;
+  max-width: 100%;
   border: 2px solid white;
+}
+
+.aliens {
+  color: #00ff00;
+}
+
+.damage-taken {
+  height: 100%;
+  width: 100%;
+  background-color: red;
+  opacity: .3;
 }
