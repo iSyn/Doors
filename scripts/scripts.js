@@ -140,7 +140,11 @@ $(function() { // On document ready
     'look under mat',
     'look under the mat',
     'remove mat',
-    'remove the mat'
+    'remove the mat',
+    'move mat',
+    'move the mat',
+    'lift mat'
+
   ]
 
   var hints = {
@@ -267,9 +271,9 @@ $(function() { // On document ready
   }
 
   function helpText() {
-    $inputLog.prepend('<li class="reply"> If you need a little boost, type: "hint" </li>')
     $inputLog.prepend('<li class="reply"> These are not all of the commands! Experiment! </li>')
     $inputLog.prepend('<li class="reply"> "open", "close", "enter", etc. </li>')
+    $inputLog.prepend('<li class="reply"> If you need a little boost, type: "<span class="yellow">hint </span>" </li>')
     $inputLog.prepend('<li class="reply"> -------------- </li>')
     $inputLog.prepend('<li class="reply"> BASIC COMMANDS </li>')
   }
@@ -1213,6 +1217,7 @@ $(function() { // On document ready
       console.log('startGame() function firing')
       if (levelText === false) {
         levelText = true;
+        $inputLog.prepend('<li class="yellow"> BEAT <span class="underline">LEVEL 4</span> TO GET ACCESS TO THE SECRET LEVEL! </li>')
         $inputLog.prepend('<li class="reply"> Type "start" to start the game! </li>')
       }
     }
@@ -1444,7 +1449,6 @@ $(function() { // On document ready
     $('.img-area').click(function(){
       shootSound.play()
     })
-
   }
 
 });

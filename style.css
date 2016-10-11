@@ -154,3 +154,11 @@ SECRET LEVEL SHIT
   font-family: 'Unica One', cursive;
   font-size: 30px;
 }
+
+.yellow {
+  color: yellow;
+}
+
+.underline {
+  text-decoration: underline;
+}
