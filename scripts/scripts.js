@@ -1332,12 +1332,16 @@ $(function() { // On document ready
     var background = $('.game-container')
     var playerInputArea = $('#player-input')
     var caret = $('.caret')
+    var legalShit = $('.legal-shit')
 
     header.css('text-decoration', 'line-through')
     header.css('color', 'red')
     headerText.text('KILL EM ALL!!!! KILL THEM ALLLLLLL')
     headerText.css('color', '#be003f')
     background.css('background-color', '#1a0008')
+    background.css('border', '1px solid maroon')
+    legalShit.css('color', 'white')
+    $('.img-area').css('border', '1px solid maroon')
 
     playerInputArea.hide()
     caret.hide()
