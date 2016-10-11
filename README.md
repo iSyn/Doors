@@ -2,6 +2,8 @@
 
 Beat all the levels, 4 in total, to find the code to access the secret level!
 
+https://github.com/iSyn/doors_game <-- LINK TO GAME
+
 ------------
 
 Initial wireframe created on project announcement day:
