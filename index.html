@@ -5,31 +5,24 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> Doors </title>
-    <link rel="stylesheet" href="style.css">
+    <title> Landing Page </title>
+    <link rel="stylesheet" href="landing.css">
     <script src="scripts/jQuery.js"></script>
-    <script src="scripts/scripts.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Unica+One" rel="stylesheet">
-  </head> <!-- head -->
+    <script src="scripts/landing.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
+  </head> <!-- closing head tag -->
 
   <body>
-    <header class ='header'> Doors </header>
-    <p class='header-text'> And then the next door, and then the next door, and then the next door... </p>
-    <div class='game-container'>
-      <div class='img-area'>
-        <p class='lives'> </p>
-        <p class='score'> </p>
+    <div class = 'container'>
+      <div class = 'header'> DOORS </div>
+      <div class = 'player-inputs'>
+        <form action="http://localhost:3000/showForm" method='post'>
+          <input class='input' id='name' type="text" placeholder='Name' >
+          <input class='input' id='email' type="email" placeholder='Email'>
+        </form>
       </div>
-      <div class='input-area'>
-        <div class='caret'> &rsaquo; </div> <!-- caret symbol -->
-        <input autofocus id='player-input' type='text' placeholder='Enter your command here...'>
-      </div> <!-- input area -->
-      <div class='history-area'> </div>
-      <div class='legal-shit'> &copy; 2016 Synclair Wang </div>
-
-
-    </div> <!-- game container -->
-
-  </body> <!-- body -->
+    </div>
+    <button type="submit" class ='button' id='playButton'> HEAD TO GAME </button>
+  </body> <!-- closing body tag -->
 
 </html>
