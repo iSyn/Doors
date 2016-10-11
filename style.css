@@ -113,6 +113,7 @@ SECRET LEVEL SHIT
   float: left;
   display: inline;
   margin: 0;
+  cursor: default;
 }
 
 .score {
@@ -122,13 +123,14 @@ SECRET LEVEL SHIT
   float: right;
   display: inline;
   margin: 0;
+  cursor: default;
 }
 
 .attacking-door {
   background-color: #331a00;
   max-height: 100%;
   max-width: 100%;
-  border: 2px solid white;
+  border: 1px solid maroon;
 }
 
 .aliens {

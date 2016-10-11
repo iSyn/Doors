@@ -1297,7 +1297,7 @@ $(function() { // On document ready
 
               setTimeout(function(){
                 location.reload()
-              },4000)
+              },5000)
             }
           })
         }
@@ -1329,11 +1329,19 @@ $(function() { // On document ready
 
     var header = $('.header')
     var headerText = $('.header-text')
-    var background = $('body')
+    var background = $('.game-container')
+    var playerInputArea = $('#player-input')
+    var caret = $('.caret')
+
     header.css('text-decoration', 'line-through')
     header.css('color', 'red')
     headerText.text('KILL EM ALL!!!! KILL THEM ALLLLLLL')
     headerText.css('color', '#be003f')
+    background.css('background-color', '#1a0008')
+
+    playerInputArea.hide()
+    caret.hide()
+
 
     $('li').empty()
     level = 'secret'
