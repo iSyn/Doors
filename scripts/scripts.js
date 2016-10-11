@@ -1217,6 +1217,7 @@ $(function() { // On document ready
       console.log('startGame() function firing')
       if (levelText === false) {
         levelText = true;
+        $inputLog.prepend('<li class="error"> Make sure the volume is turned on! </li>')
         $inputLog.prepend('<li class="yellow"> BEAT <span class="underline">LEVEL 4</span> TO GET ACCESS TO THE SECRET LEVEL! </li>')
         $inputLog.prepend('<li class="reply"> Type "start" to start the game! </li>')
       }
