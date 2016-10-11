@@ -1210,7 +1210,7 @@ $(function() { // On document ready
   var newWidth = 120;
   var newHeight = 180;
   var spawnTimer = 2500;
-  var currentLevel = 1;
+  var currentLevel = 0;
 
 
   var boomSound1 = document.createElement('audio')
@@ -1231,7 +1231,6 @@ $(function() { // On document ready
   livesText.hide()
   scoreText.hide()
 
-
   function damageTaken() {
     if (level === 'secret') {
       var newDiv = $('<div>')
@@ -1246,6 +1245,7 @@ $(function() { // On document ready
   function spawnShips() {
     if (level === 'secret'){
 
+      currentLevel += 1;
       $inputLog.prepend('<li class="reply"> LEVEL ' + currentLevel + ' </li>')
 
       setInterval(function(){
@@ -1322,20 +1322,18 @@ $(function() { // On document ready
     },5000)
   }
 
-  function displayCurrentLvl() {
-    setInterval(function(){
-      currentLevel++
-      $inputLog.prepend('<li class="reply"> LEVEL ' + currentLevel + ' </li>')
-    }, 4000)
-  }
-
   function secretLevel() {
 
     bgm_main.pause()
     bgm_secret.play()
 
     var header = $('.header')
+    var headerText = $('.header-text')
+    var background = $('body')
     header.css('text-decoration', 'line-through')
+    header.css('color', 'red')
+    headerText.text('KILL EM ALL!!!! KILL THEM ALLLLLLL')
+    headerText.css('color', '#be003f')
 
     $('li').empty()
     level = 'secret'
@@ -1364,9 +1362,6 @@ $(function() { // On document ready
       $inputLog.prepend('<li class="error"> GO! GO! GO! </li>');
       spawnShips();
     }, 5000);
-    setTimeout(function(){
-      displayCurrentLvl()
-    }, 10000)
 
     livesText.text('Lives: ' + amountOfLives)
     scoreText.text('Score: ' + scorePoint)
