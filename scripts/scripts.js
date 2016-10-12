@@ -1022,7 +1022,6 @@ $(function() { // On document ready
             lockSound.play();
             updateGraphics();
             $inputLog.prepend('<li class="reply"> You unlocked the door with the key!</li>')
-            $inputLog.prepend('<li class="reply"> Use the key to unlock the door! </li>')
           } else if (foundLockSynonym) {
             l = 0;
             $inputLog.prepend('<li class="reply"> The door is already locked. </li>')
