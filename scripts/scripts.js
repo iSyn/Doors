@@ -1018,6 +1018,10 @@ $(function() { // On document ready
             $inputLog.prepend('<li class="reply"> The door is closed. Open it first! </li>')
           } else if (foundUnlockSynonym) {
             u = 0;
+            isDoorLocked = false;
+            lockSound.play();
+            updateGraphics();
+            $inputLog.prepend('<li class="reply"> You unlocked the door with the key!</li>')
             $inputLog.prepend('<li class="reply"> Use the key to unlock the door! </li>')
           } else if (foundLockSynonym) {
             l = 0;
@@ -1030,7 +1034,7 @@ $(function() { // On document ready
             isDoorLocked = false;
             lockSound.play();
             updateGraphics();
-            $inputLog.prepend('<li class="reply"> You unlock the door!</li>')
+            $inputLog.prepend('<li class="reply"> You unlocked the door with the key!</li>')
           } else if (foundCheckMatSynonym) {
             m = 0;
             $inputLog.prepend('<li class="reply"> The mat is already off. </li>')
