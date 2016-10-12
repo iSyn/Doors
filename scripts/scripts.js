@@ -125,7 +125,8 @@ $(function() { // On document ready
     'put key in lock',
     'put the key in lock',
     'put the key in lock',
-    'put the key in the lock'
+    'put the key in the lock',
+
   ]
 
   var checkMatSynonyms = [
@@ -1182,7 +1183,9 @@ $(function() { // On document ready
           e = 0;
           level = 0;
           updateGraphics();
-          $inputLog.prepend('<li class="reply"> TYPE IN THE COMMANDS: "hire me please" </li>')
+          $inputLog.prepend('<li class="error"> -------------------------------- </li>')
+          $inputLog.prepend('<li class="error"> TYPE FOR SECRET LEVEL: <span class="yellow">"hire me please" </span> </li>')
+          $inputLog.prepend('<li class="error"> -------------------------------- </li>')
           $inputLog.prepend('<li class="reply"> YOU BEAT THE GAME! WOOOOOO </li>')
         } else if (foundUnlockSynonym) {
           u = 0;
