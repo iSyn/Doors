@@ -1343,7 +1343,7 @@ $(function() { // On document ready
 
         // CHECKING IF SHIP WAS DESTORYED BY CLICK OR REMOVED WITH TIMER
         ship.alive = true; // All ships start with alive = true
-        ship.click(function(){ // If clicked
+        ship.mousedown(function(){ // If clicked
           ship.remove(); // Remove it
 
           ship.alive = false; // Alive = false
