@@ -13,7 +13,7 @@ This idea came to me a long time ago and I actually made the game in another lan
 I had a lot of help from others when I first created the game so I wanted to recreate it, but from my code and only my code.
 
 ### Features I wanted to implement
-More Levels, but my code was so poorly written that it'll take hours just to write a simple level.
+More levels, but my code was so poorly written that it'll take hours just to write a simple level.
 A working high score list would be nice in the secret level.
 Fixing spawning outside of spawn area in secret level.
 
