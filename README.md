@@ -2,7 +2,7 @@
 
 Beat all the levels, 4 in total, to find the code to access the secret level!
 
-https://isyn.github.io/doors_game/game.html <-- LINK TO GAME
+https://isyn.github.io/Doors/game.html <-- LINK TO GAME
 
 ![gif](https://media.giphy.com/media/l4Ki4tqdPaBWaVDY4/giphy.gif)
 
