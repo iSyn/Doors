@@ -1421,9 +1421,8 @@ $(function() { // On document ready
     playerInputArea.hide()
     caret.hide()
 
-
     $('li').empty()
-    level = 'secret'
+    level = 'secret';
     updateGraphics()
     livesText.show()
     scoreText.show()
