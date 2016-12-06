@@ -32,7 +32,10 @@ body {
   /*height: 80vh;*/
   height: 630px;
   margin: 1% auto;
-
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .input-area {
