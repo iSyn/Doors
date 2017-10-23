@@ -1377,19 +1377,20 @@ $(function() { // On document ready
           })
         }
 
-        $('.attacking-door').click(function(){ // If door is clicked (AFTER RE READING CODE, A LOT OF MY CODE IS SHIT. GOTTA REDO)
-          this.remove() // Remove it
-          scorePoint += 10; // Add points
-          scoreText.text('Score: ' + (scorePoint)) // Update score
-          var randomNumber = (Math.floor(Math.random() * 3) + 1) // Picks a random number from 1-3
-          if (randomNumber === 1) { // If 1, play this sound
-            boomSound1.play()
-          } else if (randomNumber === 2) { // If 2, play this sound
-            boomSound2.play()
-          } else { // If 3, play this sound
-            boomSound3.play()
-          }
-        })
+        // $('.attacking-door').click(function(){ // If door is clicked (AFTER RE READING CODE, A LOT OF MY CODE IS SHIT. GOTTA REDO)
+        //   this.remove() // Remove it
+        //   scorePoint += 10; // Add points
+        //   console.log('adding 10')
+        //   scoreText.text('Score: ' + (scorePoint)) // Update score
+        //   var randomNumber = (Math.floor(Math.random() * 3) + 1) // Picks a random number from 1-3
+        //   if (randomNumber === 1) { // If 1, play this sound
+        //     boomSound1.play()
+        //   } else if (randomNumber === 2) { // If 2, play this sound
+        //     boomSound2.play()
+        //   } else { // If 3, play this sound
+        //     boomSound3.play()
+        //   }
+        // })
       }, spawnTimer) // Original spawn timer is 2.5secs
     } setTimeout(function(){ // Every 5 seconds, double spawn rate
       spawnShips()
